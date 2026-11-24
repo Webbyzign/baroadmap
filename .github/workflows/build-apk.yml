@@ -16,48 +16,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Download repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Install Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      # 3. Install Java
       - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      # 4. Setup Android SDK
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          accept-android-sdk-licenses: true
+          log-accepted-android-sdk-licenses: false
+          packages: platform-tools
 
-      # 5. Check website file
       - name: Check HTML File
         run: |
           if [ ! -f index.html ]; then
-            echo "ERROR: index.html not found in repository root!"
+            echo "ERROR: index.html not found!"
             exit 1
           fi
 
-      # 6. Create web assets folder
       - name: Prepare Website
         run: |
           mkdir -p www
           cp index.html www/index.html
 
-      # 7. Create Node project
       - name: Initialize Capacitor
         run: |
           npm init -y
           npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
 
-      # 8. Configure Android application
       - name: Create Capacitor Configuration
         run: |
           cat > capacitor.config.json <<'EOF'
@@ -68,22 +64,18 @@ jobs:
           }
           EOF
 
-      # 9. Generate Android project
       - name: Create Android Project
         run: npx cap add android
 
-      # 10. Copy website into Android
       - name: Sync Website
         run: npx cap sync android
 
-      # 11. Build APK
       - name: Build APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
 
-      # 12. Upload APK
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:

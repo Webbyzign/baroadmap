@@ -1,0 +1,8 @@
+{
+  "appId": "com.webbyzign.baroadmap",
+  "appName": "BA Roadmap",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

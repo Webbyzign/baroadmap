@@ -13,6 +13,39 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Prepare web folder and Capacitor config
+        run: |
+          mkdir -p www
+          if [ -f "index.html" ] && [ ! -f "www/index.html" ]; then
+            cp index.html www/index.html
+          fi
+
+          cat <<'EOF' > package.json
+          {
+            "name": "ba-roadmap-tracker",
+            "version": "1.0.0",
+            "private": true,
+            "dependencies": {
+              "@capacitor/core": "^6.1.2",
+              "@capacitor/android": "^6.1.2"
+            },
+            "devDependencies": {
+              "@capacitor/cli": "^6.1.2"
+            }
+          }
+          EOF
+
+          cat <<'EOF' > capacitor.config.json
+          {
+            "appId": "com.webbyzign.baroadmap",
+            "appName": "BA Roadmap",
+            "webDir": "www",
+            "server": {
+              "androidScheme": "https"
+            }
+          }
+          EOF
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

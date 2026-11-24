@@ -1,5 +1,5 @@
 
-name: Build Android APK
+name: Build BA Roadmap Android APK
 
 on:
   push:
@@ -12,242 +12,82 @@ permissions:
 
 jobs:
   build:
-    name: Build BA Roadmap APK
+    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
-      - name: Checkout repository
+      # 1. Download repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Setup Java 17
-      - name: Setup Java 17
+      # 2. Install Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # 3. Install Java
+      - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: 17
 
-      # 3. Setup Android SDK
+      # 4. Setup Android SDK
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # 4. Install Android SDK packages
-      - name: Install Android SDK packages
+      # 5. Check website file
+      - name: Check HTML File
         run: |
-          yes | sdkmanager --licenses || true
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-
-      # 5. Setup Gradle 8.2
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.2'
-
-      # 6. Create Android WebView project
-      - name: Create Android WebView project
-        shell: bash
-        run: |
-          set -e
-
-          rm -rf android-app
-
-          mkdir -p android-app/app/src/main/java/com/baroadmap/app
-          mkdir -p android-app/app/src/main/res/layout
-          mkdir -p android-app/app/src/main/res/values
-          mkdir -p android-app/app/src/main/assets
-
-          # Find website HTML file
-          if [ -f "www/index.html" ]; then
-            cp "www/index.html" android-app/app/src/main/assets/index.html
-          elif [ -f "www/index.html." ]; then
-            cp "www/index.html." android-app/app/src/main/assets/index.html
-          elif [ -f "index.html" ]; then
-            cp "index.html" android-app/app/src/main/assets/index.html
-          elif [ -f "index.html." ]; then
-            cp "index.html." android-app/app/src/main/assets/index.html
-          else
-            echo "ERROR: index.html not found!"
-            echo "Please check your www folder."
+          if [ ! -f index.html ]; then
+            echo "ERROR: index.html not found in repository root!"
             exit 1
           fi
 
-          echo "Website HTML copied successfully."
-
-          # Settings Gradle
-          cat <<'EOF' > android-app/settings.gradle
-          rootProject.name = "BA Roadmap"
-          include ':app'
-          EOF
-
-          # Root Gradle
-          cat <<'EOF' > android-app/build.gradle
-          buildscript {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-              dependencies {
-                  classpath 'com.android.tools.build:gradle:8.2.2'
-              }
-          }
-
-          allprojects {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-          }
-          EOF
-
-          # Gradle properties
-          cat <<'EOF' > android-app/gradle.properties
-          org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
-          android.useAndroidX=true
-          EOF
-
-          # App Gradle
-          cat <<'EOF' > android-app/app/build.gradle
-          plugins {
-              id 'com.android.application'
-          }
-
-          android {
-              namespace 'com.baroadmap.app'
-              compileSdk 34
-
-              defaultConfig {
-                  applicationId "com.baroadmap.app"
-                  minSdk 23
-                  targetSdk 34
-                  versionCode 1
-                  versionName "1.0"
-              }
-
-              buildTypes {
-                  release {
-                      minifyEnabled false
-                  }
-
-                  debug {
-                      minifyEnabled false
-                  }
-              }
-
-              compileOptions {
-                  sourceCompatibility JavaVersion.VERSION_17
-                  targetCompatibility JavaVersion.VERSION_17
-              }
-          }
-
-          dependencies {
-              implementation 'androidx.appcompat:appcompat:1.6.1'
-              implementation 'androidx.webkit:webkit:1.10.0'
-          }
-          EOF
-
-          # App name
-          cat <<'EOF' > android-app/app/src/main/res/values/strings.xml
-          <resources>
-              <string name="app_name">BA Roadmap</string>
-          </resources>
-          EOF
-
-          # WebView layout
-          cat <<'EOF' > android-app/app/src/main/res/layout/activity_main.xml
-          <?xml version="1.0" encoding="utf-8"?>
-          <WebView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/webview"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent" />
-          EOF
-
-          # Android manifest
-          cat <<'EOF' > android-app/app/src/main/AndroidManifest.xml
-          <?xml version="1.0" encoding="utf-8"?>
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-              <uses-permission android:name="android.permission.INTERNET" />
-
-              <application
-                  android:allowBackup="true"
-                  android:label="@string/app_name"
-                  android:usesCleartextTraffic="true"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-                  <activity
-                      android:name=".MainActivity"
-                      android:exported="true"
-                      android:configChanges="orientation|screenSize|keyboardHidden">
-
-                      <intent-filter>
-                          <action android:name="android.intent.action.MAIN" />
-                          <category android:name="android.intent.category.LAUNCHER" />
-                      </intent-filter>
-
-                  </activity>
-              </application>
-          </manifest>
-          EOF
-
-          # Main Activity Java
-          cat <<'EOF' > android-app/app/src/main/java/com/baroadmap/app/MainActivity.java
-          package com.baroadmap.app;
-
-          import android.os.Bundle;
-          import android.webkit.WebSettings;
-          import android.webkit.WebView;
-          import android.webkit.WebViewClient;
-          import androidx.appcompat.app.AppCompatActivity;
-
-          public class MainActivity extends AppCompatActivity {
-
-              private WebView webView;
-
-              @Override
-              protected void onCreate(Bundle savedInstanceState) {
-                  super.onCreate(savedInstanceState);
-                  setContentView(R.layout.activity_main);
-
-                  webView = findViewById(R.id.webview);
-
-                  WebSettings settings = webView.getSettings();
-                  settings.setJavaScriptEnabled(true);
-                  settings.setDomStorageEnabled(true);
-                  settings.setAllowFileAccess(true);
-                  settings.setMediaPlaybackRequiresUserGesture(false);
-
-                  webView.setWebViewClient(new WebViewClient());
-
-                  webView.loadUrl("file:///android_asset/index.html");
-              }
-
-              @Override
-              public void onBackPressed() {
-                  if (webView != null && webView.canGoBack()) {
-                      webView.goBack();
-                  } else {
-                      super.onBackPressed();
-                  }
-              }
-          }
-          EOF
-
-      # 7. Build Android APK
-      - name: Build APK with Gradle
+      # 6. Create web assets folder
+      - name: Prepare Website
         run: |
-          cd android-app
-          gradle assembleDebug --stacktrace
+          mkdir -p www
+          cp index.html www/index.html
 
-      # 8. Verify APK
-      - name: Verify APK
+      # 7. Create Node project
+      - name: Initialize Capacitor
         run: |
-          ls -lh android-app/app/build/outputs/apk/debug/
-          test -f android-app/app/build/outputs/apk/debug/app-debug.apk
+          npm init -y
+          npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
 
-      # 9. Upload APK
+      # 8. Configure Android application
+      - name: Create Capacitor Configuration
+        run: |
+          cat > capacitor.config.json <<'EOF'
+          {
+            "appId": "com.baroadmap.app",
+            "appName": "BA Roadmap",
+            "webDir": "www"
+          }
+          EOF
+
+      # 9. Generate Android project
+      - name: Create Android Project
+        run: npx cap add android
+
+      # 10. Copy website into Android
+      - name: Sync Website
+        run: npx cap sync android
+
+      # 11. Build APK
+      - name: Build APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      # 12. Upload APK
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
           name: BA-Roadmap-APK
-          path: android-app/app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          retention-days: 30

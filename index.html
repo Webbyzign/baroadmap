@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Analyst 6-Month Roadmap & Career Readiness Tracker</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+            },
+            accent: {
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <style>
+    body {
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .custom-shadow {
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    }
+    .cert-frame {
+      border: 10px solid #ffffff;
+      outline: 2px solid #cbd5e1;
+      box-shadow: 0 0 0 6px #2563eb, 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    .task-item:hover {
+      background-color: #f1f5f9;
+    }
+    /* Printable Certificate Styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printableCertificateModal, #printableCertificateModal * {
+        visibility: visible;
+      }
+      #printableCertificateModal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: white !important;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased pb-16 selection:bg-blue-100 selection:text-blue-900">
+
+  <!-- TOP HEADER & NAVBAR -->
+  <header class="border-b border-slate-200 sticky top-0 bg-white/95 backdrop-blur-md z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-extrabold text-xl shadow-md shadow-blue-500/20">
+          BA
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-none">
+              Business Analyst Career Roadmap
+            </h1>
+            <span id="rankBadge" class="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+              Aspiring Business Analyst
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">6-Month Complete Curriculum & Career Readiness Tracker</p>
+        </div>
+      </div>
+
+      <!-- Action Toolbar Buttons -->
+      <div class="flex items-center flex-wrap gap-2">
+        <button onclick="openCertificateModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition">
+          <i class="fa-solid fa-award text-emerald-600"></i>
+          <span>BA Readiness Certificate</span>
+        </button>
+        
+        <!-- JSON Backup Controls -->
+        <button onclick="exportDataJSON()" class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-2 rounded-lg text-slate-600 bg-slate-100 hover:bg-slate-200 transition" title="Export Backup JSON">
+          <i class="fa-solid fa-download text-slate-500"></i>
+          <span class="hidden sm:inline">Export</span>
+        </button>
+        <label class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-2 rounded-lg text-slate-600 bg-slate-100 hover:bg-slate-200 transition cursor-pointer" title="Import Backup JSON">
+          <i class="fa-solid fa-upload text-slate-500"></i>
+          <span class="hidden sm:inline">Import</span>
+          <input type="file" id="importFileInput" onchange="importDataJSON(event)" accept=".json" class="hidden">
+        </label>
+
+        <button onclick="confirmReset()" class="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-2 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 border border-transparent transition" title="Reset all progress">
+          <i class="fa-solid fa-rotate-left"></i>
+          <span class="hidden md:inline">Reset</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Overall Progress Bar -->
+    <div class="w-full bg-slate-100 h-1.5 overflow-hidden">
+      <div id="topProgressBar" class="bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 h-1.5 transition-all duration-500" style="width: 0%"></div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- HERO DASHBOARD STATS CARD -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Primary Meter Card (Left 5 Cols) -->
+      <div class="lg:col-span-5 p-6 rounded-2xl border border-slate-200 bg-white custom-shadow flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Completion</span>
+            <h2 id="overallRankTitle" class="text-xl font-extrabold text-slate-900 mt-0.5">Aspiring Business Analyst</h2>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-6 my-2">
+          <!-- Circular SVG Progress -->
+          <div class="relative w-24 h-24 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-24 h-24 transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-slate-100" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path id="circleProgress" class="text-blue-600 transition-all duration-700 ease-out" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <span id="statPercentText" class="absolute text-xl font-black text-slate-900">0%</span>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-baseline gap-1.5">
+              <span id="completedCountText" class="text-2xl font-black text-slate-900">0</span>
+              <span id="totalCountText" class="text-xs font-semibold text-slate-500">/ 0 Topics Ticked</span>
+            </div>
+            <p id="rankSubtitleText" class="text-xs text-slate-500 leading-relaxed">
+              Master Excel & SQL foundations to kickstart your journey toward becoming a Business Analyst.
+            </p>
+          </div>
+        </div>
+
+        <!-- Target Roles Footer -->
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-slate-400 font-medium">Target Roles:</span>
+          <span class="font-semibold text-slate-700">Associate BA &bull; Junior BA &bull; Product Analyst &bull; BI Analyst</span>
+        </div>
+      </div>
+
+      <!-- Skill Pillar Breakdowns (Right 7 Cols) -->
+      <div class="lg:col-span-7 p-6 rounded-2xl border border-slate-200 bg-white custom-shadow flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">6 Core Skill Pillars Breakdown</h3>
+          <span class="text-xs text-blue-600 font-medium"><i class="fa-solid fa-arrows-rotate mr-1"></i>Live Syncing</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3.5" id="pillarProgressContainer">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span>Degree Foundation: <strong class="text-slate-800">BA Economics</strong></span>
+          <span>Proof of Work: <strong class="text-slate-800">3 Portfolio Projects</strong></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CONTROLS & SEARCH BAR TOOLBAR -->
+    <div class="p-4 rounded-2xl bg-white border border-slate-200 custom-shadow flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Filter Tabs -->
+      <div class="flex items-center bg-slate-100 p-1 rounded-xl">
+        <button onclick="setFilter('all')" id="filterAll" class="filter-btn text-xs font-semibold px-3.5 py-1.5 rounded-lg transition bg-white text-blue-600 shadow-sm">
+          All Topics
+        </button>
+        <button onclick="setFilter('pending')" id="filterPending" class="filter-btn text-xs font-semibold px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">
+          Pending
+        </button>
+        <button onclick="setFilter('completed')" id="filterCompleted" class="filter-btn text-xs font-semibold px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">
+          Completed
+        </button>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative flex-1 max-w-md">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Search functions (XLOOKUP, CTE, DAX, BRD, User Stories, Pandas)..." 
+          class="w-full text-xs pl-9 pr-8 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-slate-50/50">
+        <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+          <i class="fa-solid fa-circle-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Collapse/Expand All Buttons -->
+      <div class="flex items-center gap-2">
+        <button onclick="toggleAllMonths(true)" class="text-xs font-medium px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 transition">
+          <i class="fa-solid fa-folder-open mr-1 text-slate-400"></i> Expand All
+        </button>
+        <button onclick="toggleAllMonths(false)" class="text-xs font-medium px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 transition">
+          <i class="fa-solid fa-folder mr-1 text-slate-400"></i> Collapse
+        </button>
+      </div>
+
+    </div>
+
+    <!-- MAIN CURRICULUM LAYOUT GRID (Left: 6 Months Roadmap | Right: Sidebar Tools) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- LEFT ROADMAP COLUMN (8 Cols) -->
+      <div class="lg:col-span-8 space-y-6" id="monthsContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- RIGHT SIDEBAR COLUMN (4 Cols) -->
+      <div class="lg:col-span-4 space-y-6">
+
+        <!-- Quick Headline Tool Widget -->
+        <div class="p-5 rounded-2xl border border-blue-200 bg-blue-50/40 custom-shadow space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-blue-800 flex items-center gap-1.5">
+              <i class="fa-brands fa-linkedin text-blue-600 text-sm"></i> Month 6 Headline Tool
+            </h3>
+            <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-full">Week 2</span>
+          </div>
+          <p class="text-xs text-slate-600">Copy exact ATS-optimized LinkedIn headline for recruiter visibility:</p>
+          <div class="p-2.5 bg-white rounded-xl border border-blue-100 font-mono text-xs text-slate-800 leading-relaxed select-all" id="linkedinHeadlineText">
+            Aspiring Business & Product Analyst | BA Economics | SQL, Python, Power BI, Agile & BRD
+          </div>
+          <button onclick="copyLinkedInHeadline()" id="headlineCopyBtn" class="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2 shadow-sm">
+            <i class="fa-regular fa-copy"></i>
+            <span id="headlineCopyText">Copy Headline</span>
+          </button>
+        </div>
+
+        <!-- Application Tracker & Scenario Log -->
+        <div class="p-5 rounded-2xl border border-slate-200 bg-white custom-shadow space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-paper-plane text-emerald-600 text-xs"></i>
+              Daily Job Application Log
+            </h3>
+            <span id="appLogBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">0 Logged</span>
+          </div>
+
+          <form onsubmit="handleLogSubmit(event)" class="space-y-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Company & Role</label>
+              <input type="text" id="logCompany" required placeholder="e.g. Swiggy - Junior BA" class="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-500 bg-white">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Platform</label>
+                <select id="logPlatform" class="w-full text-xs px-2 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-500 bg-white">
+                  <option value="LinkedIn">LinkedIn</option>
+                  <option value="Naukri">Naukri</option>
+                  <option value="Wellfound">Wellfound</option>
+                  <option value="Internshala">Internshala</option>
+                  <option value="Direct Site">Direct Site</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Date</label>
+                <input type="text" id="logDate" class="w-full text-xs px-2 py-1.5 rounded-lg border border-slate-300 bg-slate-100 text-slate-600 font-mono" readonly>
+              </div>
+            </div>
+            <button type="submit" class="w-full text-xs font-semibold py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg transition flex items-center justify-center gap-1">
+              <i class="fa-solid fa-plus text-[10px]"></i> Record Application
+            </button>
+          </form>
+
+          <div id="appLogContainer" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Personal Study Notes & SQL Snippets -->
+        <div class="p-5 rounded-2xl border border-slate-200 bg-white custom-shadow space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-regular fa-note-sticky text-amber-500"></i>
+              SQL & Interview Scratchpad
+            </h3>
+            <span class="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Auto-saved
+            </span>
+          </div>
+          <p class="text-xs text-slate-500">Keep interview formulas, SQL CTE templates, or BRD outlines handy.</p>
+          <textarea id="studyNotes" oninput="saveNotes()" rows="6" placeholder="Example SQL CTE syntax:&#10;WITH RegionalSales AS (&#10;  SELECT region, SUM(amount) AS total FROM sales GROUP BY region&#10;)&#10;SELECT * FROM RegionalSales WHERE total > 10000;" class="w-full text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 font-mono text-slate-800 bg-slate-50/50 leading-relaxed resize-y"></textarea>
+        </div>
+
+        <!-- Quick Target Platform Links -->
+        <div class="p-5 rounded-2xl border border-slate-200 bg-white custom-shadow space-y-3">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Direct Application Channels</h3>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <a href="https://www.linkedin.com/jobs/" target="_blank" class="p-2 rounded-xl border border-slate-200 hover:bg-blue-50 hover:border-blue-200 font-semibold text-slate-700 flex items-center gap-2 transition">
+              <i class="fa-brands fa-linkedin text-blue-600 text-sm"></i> LinkedIn
+            </a>
+            <a href="https://www.naukri.com/" target="_blank" class="p-2 rounded-xl border border-slate-200 hover:bg-blue-50 hover:border-blue-200 font-semibold text-slate-700 flex items-center gap-2 transition">
+              <i class="fa-solid fa-briefcase text-blue-500 text-sm"></i> Naukri
+            </a>
+            <a href="https://wellfound.com/" target="_blank" class="p-2 rounded-xl border border-slate-200 hover:bg-purple-50 hover:border-purple-200 font-semibold text-slate-700 flex items-center gap-2 transition">
+              <i class="fa-solid fa-rocket text-purple-600 text-sm"></i> Wellfound
+            </a>
+            <a href="https://internshala.com/" target="_blank" class="p-2 rounded-xl border border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 font-semibold text-slate-700 flex items-center gap-2 transition">
+              <i class="fa-solid fa-graduation-cap text-emerald-600 text-sm"></i> Internshala
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ACHIEVEMENT CERTIFICATE MODAL -->
+  <div id="printableCertificateModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 relative custom-shadow border border-slate-200 max-h-[95vh] overflow-y-auto">
+      
+      <!-- Close Button (Hidden during print) -->
+      <button onclick="closeCertificateModal()" class="no-print absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <!-- Certificate Frame -->
+      <div id="printableCertificate" class="cert-frame p-6 sm:p-10 text-center bg-white rounded-2xl relative space-y-5">
+        
+        <!-- Header Badge -->
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 text-white mx-auto flex items-center justify-center text-3xl shadow-xl shadow-blue-500/30">
+          <i class="fa-solid fa-award"></i>
+        </div>
+
+        <div>
+          <p class="text-xs font-black uppercase tracking-widest text-blue-600">Official Certificate of Career Readiness</p>
+          <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-1 font-serif">Certified Business Analyst</h2>
+          <p class="text-xs text-slate-500 mt-1">Ready for Associate BA, Junior BA, Product & BI Analyst Roles</p>
+        </div>
+
+        <p class="text-xs text-slate-400 uppercase tracking-widest">This certifies that</p>
+        
+        <!-- Candidate Name Input Field (Editable Inline) -->
+        <div class="inline-block border-b-2 border-slate-400 hover:border-blue-600 transition px-6 py-1">
+          <input type="text" id="certCandidateName" value="M Ahammad Irfan" oninput="saveCandidateName(this.value)" class="text-center font-bold text-xl sm:text-2xl text-slate-900 focus:outline-none bg-transparent" title="Click to edit your name">
+        </div>
+        <p class="text-[10px] text-slate-400 italic no-print">^ Click above name to customize for official export</p>
+
+        <p class="text-xs text-slate-600 max-w-xl mx-auto leading-relaxed">
+          Has successfully executed the complete 6-Month Business Analyst curriculum, demonstrating verified technical proficiency across Advanced Excel, SQL Databases, Python Data Analytics, Power BI Dashboards, Agile & BRD Documentation, and 3 End-to-End Portfolio Projects.
+        </p>
+
+        <!-- Skill Badges Grid -->
+        <div class="flex flex-wrap justify-center gap-2 py-2">
+          <span class="text-xs font-bold px-3 py-1 bg-slate-100 text-slate-800 rounded-lg border border-slate-200">BA Economics</span>
+          <span class="text-xs font-bold px-3 py-1 bg-blue-50 text-blue-800 rounded-lg border border-blue-200">SQL & Window Functions</span>
+          <span class="text-xs font-bold px-3 py-1 bg-amber-50 text-amber-900 rounded-lg border border-amber-200">Python Pandas & NumPy</span>
+          <span class="text-xs font-bold px-3 py-1 bg-yellow-50 text-yellow-900 rounded-lg border border-yellow-200">Power BI & DAX</span>
+          <span class="text-xs font-bold px-3 py-1 bg-purple-50 text-purple-900 rounded-lg border border-purple-200">Agile, Jira & BRD/FRD</span>
+          <span class="text-xs font-bold px-3 py-1 bg-emerald-50 text-emerald-900 rounded-lg border border-emerald-200">3 Portfolio Projects</span>
+        </div>
+
+        <!-- Footer Verification Info -->
+        <div class="pt-6 border-t border-slate-200 flex items-center justify-between text-left text-xs">
+          <div>
+            <p class="font-extrabold text-slate-900">Curriculum Completion</p>
+            <p class="text-emerald-600 font-bold flex items-center gap-1.5 mt-0.5">
+              <i class="fa-solid fa-circle-check"></i> <span id="certVerifiedPercent">100% Curriculum Verified</span>
+            </p>
+          </div>
+          <div class="text-right">
+            <p class="font-extrabold text-slate-900" id="certDateText">Date: Verified</p>
+            <p class="text-slate-500 mt-0.5">Status: Job Applications Active</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Footer (Hidden in print) -->
+      <div class="mt-6 flex items-center justify-between gap-3 no-print">
+        <button onclick="triggerConfetti()" class="text-xs font-semibold px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition flex items-center gap-2">
+          <i class="fa-solid fa-wand-magic-sparkles text-purple-600"></i> Celebrate Confetti
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="text-xs font-bold px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-print"></i> Print / Save PDF
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ADD CUSTOM TASK MODAL -->
+  <div id="customTaskModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 custom-shadow border border-slate-200">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold text-slate-900 text-base">Add Custom Topic to Roadmap</h3>
+        <button onclick="closeCustomTaskModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <form onsubmit="handleAddCustomTask(event)" class="space-y-3.5">
+        <input type="hidden" id="customTaskMonthId">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Topic Name / Function</label>
+          <input type="text" id="customTaskTitle" required placeholder="e.g. Master Power Query Unpivot or Subqueries" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Details / Context</label>
+          <input type="text" id="customTaskDetail" placeholder="e.g. Practice on 3 real-world datasets" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Tag (Optional)</label>
+          <input type="text" id="customTaskTag" placeholder="e.g. SQL / Excel / Python" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-blue-500">
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeCustomTaskModal()" class="text-xs px-4 py-2 rounded-xl border border-slate-300 font-semibold text-slate-600 hover:bg-slate-50">Cancel</button>
+          <button type="submit" class="text-xs px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 font-semibold text-white">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APP LOGIC -->
+  <script>
+    // COMPLETE UNABRIDGED ROADMAP DATA STRUCTURE
+    const ROADMAP_DATA = [
+      {
+        monthId: 'm1',
+        monthNum: 1,
+        title: 'Month 1: Advanced Excel & SQL',
+        subtitle: 'The Daily Bread of Every Business Analyst',
+        badge: 'Excel & SQL Pillar',
+        pillarKey: 'p1',
+        modules: [
+          {
+            moduleTitle: '1. Microsoft Excel / Google Sheets (Week 1–2)',
+            topics: [
+              { id: 'm1_t1', title: 'Data Cleaning: TRIM, CLEAN, PROPER', detail: 'Remove extra spaces, non-printable characters, and format text proper casing.', tag: 'Excel' },
+              { id: 'm1_t2', title: 'Data Cleaning: LEFT / RIGHT / MID', detail: 'Extract specific text substrings from strings.', tag: 'Excel' },
+              { id: 'm1_t3', title: 'Data Cleaning: Text-to-Columns, Duplicates, Validation', detail: 'Split data using delimiters, remove duplicate rows, and restrict input rules.', tag: 'Excel' },
+              { id: 'm1_t4', title: 'Lookup Functions: VLOOKUP, XLOOKUP, INDEX-MATCH', detail: 'Perform vertical lookups, robust multi-directional lookups, and flexible index matching.', tag: 'Excel' },
+              { id: 'm1_t5', title: 'Logical Functions: IF, IFS, AND / OR', detail: 'Build single and nested conditional logic for segmenting data.', tag: 'Excel' },
+              { id: 'm1_t6', title: 'Conditional Aggregations: SUMIFS, COUNTIFS, AVERAGEIFS', detail: 'Calculate totals, counts, and averages based on multiple criteria.', tag: 'Excel' },
+              { id: 'm1_t7', title: 'Analysis & Reporting: Pivot Tables & Pivot Charts', detail: 'Summarize large datasets dynamically and create interactive visual charts.', tag: 'Excel' },
+              { id: 'm1_t8', title: 'Analysis & Reporting: Slicers & Conditional Formatting', detail: 'Add dynamic dashboard filters and visual data callouts.', tag: 'Excel' },
+              { id: 'm1_t9', title: 'Analysis & Reporting: Basic What-If Analysis (Goal Seek)', detail: 'Determine target input values required to achieve desired financial/business outcomes.', tag: 'Excel' }
+            ]
+          },
+          {
+            moduleTitle: '2. SQL — Structured Query Language (Week 3–4)',
+            topics: [
+              { id: 'm1_t10', title: 'Basic Filtering: SELECT, DISTINCT, WHERE', detail: 'Retrieve unique records and apply single/multiple filtering rules.', tag: 'SQL' },
+              { id: 'm1_t11', title: 'Basic Operators: AND / OR / NOT, IN, BETWEEN, LIKE', detail: 'Pattern matching, set filtering, and range conditions.', tag: 'SQL' },
+              { id: 'm1_t12', title: 'Sorting & Limiting: ORDER BY, LIMIT', detail: 'Sort query results ascending/descending and cap returned row counts.', tag: 'SQL' },
+              { id: 'm1_t13', title: 'Aggregations: COUNT, SUM, AVG, MIN, MAX', detail: 'Compute key numeric metrics across tables.', tag: 'SQL' },
+              { id: 'm1_t14', title: 'Grouping Logic: GROUP BY, HAVING', detail: 'Aggregate data by categories and filter grouped aggregate results.', tag: 'SQL' },
+              { id: 'm1_t15', title: 'Joins: INNER JOIN & LEFT JOIN', detail: 'Combine records from multiple relational tables.', tag: 'SQL' },
+              { id: 'm1_t16', title: 'Joins: RIGHT JOIN, FULL OUTER JOIN, SELF JOIN', detail: 'Master complex relational joins and hierarchical table self-joins.', tag: 'SQL' },
+              { id: 'm1_t17', title: 'Intermediate SQL: CASE WHEN Conditional Logic', detail: 'Create dynamic calculated columns and bucket categories directly in SQL queries.', tag: 'SQL' },
+              { id: 'm1_t18', title: 'Intermediate SQL: Subqueries & CTEs (WITH Clause)', detail: 'Write modular sub-queries and Common Table Expressions for complex data pipeline steps.', tag: 'SQL' },
+              { id: 'm1_t19', title: 'Date & String Functions: DATEDIFF, DATE_TRUNC, CONCAT', detail: 'Manipulate dates, calculate durations, and concatenate text columns.', tag: 'SQL' },
+              { id: 'm1_t20', title: 'Window Functions: ROW_NUMBER(), RANK(), DENSE_RANK()', detail: 'Assign sequential and ranked numbers across partition windows.', tag: 'SQL' },
+              { id: 'm1_t21', title: 'Window Functions: LAG(), LEAD(), Running Totals (SUM() OVER)', detail: 'Compare current row with previous/next rows and compute cumulative sums.', tag: 'SQL' }
+            ]
+          }
+        ]
+      },
+      {
+        monthId: 'm2',
+        monthNum: 2,
+        title: 'Month 2: Python for Business & Data Analysis',
+        subtitle: 'Master data manipulation & visualization libraries (NumPy & Pandas)',
+        badge: 'Python Analytics Pillar',
+        pillarKey: 'p2',
+        modules: [
+          {
+            moduleTitle: '1. Core Python (Quick Revision — Days 1–3)',
+            topics: [
+              { id: 'm2_t1', title: 'Data Structures: Lists, Dictionaries, Tuples, Sets', detail: 'Master core Python containers and list/dictionary comprehensions.', tag: 'Python' },
+              { id: 'm2_t2', title: 'Control Flow: if-else, for/while loops', detail: 'Implement conditional branching and iterative loops.', tag: 'Python' },
+              { id: 'm2_t3', title: 'Functions & Exceptions: def, lambda, try-except', detail: 'Write reusable modular functions, anonymous functions, and error handling.', tag: 'Python' }
+            ]
+          },
+          {
+            moduleTitle: '2. NumPy (Numerical Python — Days 4–7)',
+            topics: [
+              { id: 'm2_t4', title: 'Arrays: Creating 1D & 2D arrays (np.array, np.arange, np.zeros, np.ones)', detail: 'Initialize numerical arrays efficiently for analytical computing.', tag: 'NumPy' },
+              { id: 'm2_t5', title: 'Indexing, Slicing & Boolean Filtering', detail: 'Extract sub-arrays and apply boolean masks.', tag: 'NumPy' },
+              { id: 'm2_t6', title: 'Math & Stats: np.mean, np.median, np.std, np.percentile, np.sum', detail: 'Compute summary metrics across array dimensions.', tag: 'NumPy' },
+              { id: 'm2_t7', title: 'Vectorized Operations & np.where()', detail: 'Execute high-performance array operations and conditional logic.', tag: 'NumPy' }
+            ]
+          },
+          {
+            moduleTitle: '3. Pandas (Most Important Library — Week 2–3)',
+            topics: [
+              { id: 'm2_t8', title: 'Series & DataFrames: read_csv, read_excel, to_csv', detail: 'Import and export datasets to and from CSV/Excel files.', tag: 'Pandas' },
+              { id: 'm2_t9', title: 'Inspection: .head(), .tail(), .info(), .describe(), .shape, .value_counts()', detail: 'Perform initial exploratory data analysis (EDA) checks.', tag: 'Pandas' },
+              { id: 'm2_t10', title: 'Selection & Filtering: .loc[], .iloc[], df[df[\'Sales\'] > 5000], .isin()', detail: 'Filter DataFrames by labels, integer indices, and values.', tag: 'Pandas' },
+              { id: 'm2_t11', title: 'Data Cleaning: .isnull(), .dropna(), .fillna()', detail: 'Handle missing data points intelligently.', tag: 'Pandas' },
+              { id: 'm2_t12', title: 'Data Cleaning: .astype(), .drop_duplicates(), .str string operations', detail: 'Fix column data types, drop duplicate records, and clean text columns.', tag: 'Pandas' },
+              { id: 'm2_t13', title: 'Aggregation & Grouping: .groupby() with .agg(), pd.pivot_table()', detail: 'Perform multi-level aggregation and pivot tables in Pandas.', tag: 'Pandas' },
+              { id: 'm2_t14', title: 'Combining Data: pd.merge() (SQL Joins) & pd.concat()', detail: 'Merge DataFrames on keys and concatenate along rows/columns.', tag: 'Pandas' },
+              { id: 'm2_t15', title: 'Date-Time Analysis: pd.to_datetime(), .dt accessors, resampling', detail: 'Parse dates, extract temporal attributes, and aggregate time-series data.', tag: 'Pandas' }
+            ]
+          }
+        ]
+      },
+      {
+        monthId: 'm3',
+        monthNum: 3,
+        title: 'Month 3: Business Intelligence (Power BI) & Statistics',
+        subtitle: 'Power Query ETL, Star Schema Modeling, DAX & Business Statistics',
+        badge: 'Power BI & Stats Pillar',
+        pillarKey: 'p3',
+        modules: [
+          {
+            moduleTitle: '1. Power BI (Week 1–3)',
+            topics: [
+              { id: 'm3_t1', title: 'Power Query (ETL): Importing, splitting columns, unpivoting data', detail: 'Clean and transform raw data sources prior to modeling.', tag: 'Power BI' },
+              { id: 'm3_t2', title: 'Power Query (ETL): Merging queries & changing data types', detail: 'Combine tables and ensure strict data type integrity.', tag: 'Power BI' },
+              { id: 'm3_t3', title: 'Data Modeling: Star Schema (Fact Tables vs Dimension Tables)', detail: 'Design optimal relational data models with 1-to-Many relationships.', tag: 'Power BI' },
+              { id: 'm3_t4', title: 'DAX: Calculated Columns vs Measures', detail: 'Understand context evaluation and storage differences in DAX.', tag: 'DAX' },
+              { id: 'm3_t5', title: 'DAX Measures: SUM, CALCULATE, FILTER, DIVIDE', detail: 'Write dynamic aggregate measures and alter filter contexts.', tag: 'DAX' },
+              { id: 'm3_t6', title: 'DAX Time Intelligence: TOTALYTD, SAMEPERIODLASTYEAR', detail: 'Calculate year-to-date and year-over-year metrics.', tag: 'DAX' },
+              { id: 'm3_t7', title: 'Dashboard Design: KPI cards, bar/line charts, slicers', detail: 'Build intuitive visualization layouts for business decision-makers.', tag: 'Power BI' },
+              { id: 'm3_t8', title: 'Dashboard Design: Drill-through filters & clean color hierarchy', detail: 'Enable interactive detailed drill-downs with consistent formatting.', tag: 'Power BI' }
+            ]
+          },
+          {
+            moduleTitle: '2. Practical Business Statistics (Week 4)',
+            topics: [
+              { id: 'm3_t9', title: 'Descriptive Stats: Mean, Median, Mode, Std Dev, Variance, Quartiles', detail: 'Summarize data distribution central tendency and dispersion.', tag: 'Statistics' },
+              { id: 'm3_t10', title: 'Correlation vs Causation', detail: 'Evaluate linear relationships without making false causal assertions.', tag: 'Statistics' },
+              { id: 'm3_t11', title: 'Basic A/B Testing: Control vs Variant, Conversion Rate, Significance', detail: 'Understand experimental design and statistical confidence intuition.', tag: 'Statistics' }
+            ]
+          }
+        ]
+      },
+      {
+        monthId: 'm4',
+        monthNum: 4,
+        title: 'Month 4: Core Business Analysis & Product Skills',
+        subtitle: 'Requirement Elicitation, Agile/Scrum, BRD/FRD, & Case Studies',
+        badge: 'BA & Agile Pillar',
+        pillarKey: 'p4',
+        modules: [
+          {
+            moduleTitle: '1. Requirement Gathering & Documentation (Week 1–2)',
+            topics: [
+              { id: 'm4_t1', title: 'Stakeholder Analysis: Identifying clients, end-users, devs, PMs', detail: 'Map out project stakeholders and manage expectations.', tag: 'BA Skills' },
+              { id: 'm4_t2', title: 'Requirement Elicitation: Interviews, Surveys, Brainstorming, Observation', detail: 'Gather requirements using structured qualitative techniques.', tag: 'BA Skills' },
+              { id: 'm4_t3', title: 'BRD (Business Requirement Document): What the business needs & why', detail: 'Write comprehensive business-level project specifications.', tag: 'Documentation' },
+              { id: 'm4_t4', title: 'FRD (Functional Requirement Document): How software should behave', detail: 'Detail functional system behavior and technical requirements.', tag: 'Documentation' },
+              { id: 'm4_t5', title: 'User Stories & Acceptance Criteria ("As a... I want... Given/When/Then")', detail: 'Draft Agile user stories with clear testable acceptance criteria.', tag: 'Agile' }
+            ]
+          },
+          {
+            moduleTitle: '2. Agile, Scrum & BA Tools (Week 3)',
+            topics: [
+              { id: 'm4_t6', title: 'SDLC Methodologies: Waterfall vs Agile', detail: 'Compare traditional sequential development vs iterative sprint cycles.', tag: 'Agile' },
+              { id: 'm4_t7', title: 'Scrum Ceremonies: Sprint Planning, Stand-ups, Reviews, Retrospectives', detail: 'Participate in and facilitate core Scrum team rituals.', tag: 'Agile' },
+              { id: 'm4_t8', title: 'Jira / Trello: Epics, User Stories, Kanban / Scrum boards', detail: 'Manage backlog items and track progress visually.', tag: 'Tools' },
+              { id: 'm4_t9', title: 'Draw.io / Miro: Process Flowcharts (As-Is vs To-Be) & UML Use Cases', detail: 'Diagram current state vs target state workflows visually.', tag: 'Tools' },
+              { id: 'm4_t10', title: 'Figma / Balsamiq: Low-fidelity wireframes', detail: 'Create basic UI sketches to communicate proposed product features.', tag: 'Tools' }
+            ]
+          },
+          {
+            moduleTitle: '3. Case Studies & Business Metrics (Week 4)',
+            topics: [
+              { id: 'm4_t11', title: 'Key Business KPIs: Revenue, Profit Margin, CAC, CLV, Churn, Retention', detail: 'Track essential financial and customer health metrics.', tag: 'Metrics' },
+              { id: 'm4_t12', title: 'Root Cause Analysis (RCA): 5 Whys & Fishbone Diagram', detail: 'Diagnose metric drops systematically using structured frameworks.', tag: 'RCA' }
+            ]
+          }
+        ]
+      },
+      {
+        monthId: 'm5',
+        monthNum: 5,
+        title: 'Month 5: Portfolio Projects (Proof of Work)',
+        subtitle: 'Build 3 end-to-end projects combining Economics + Data + BA Documentation',
+        badge: 'Portfolio Proof Pillar',
+        pillarKey: 'p5',
+        modules: [
+          {
+            moduleTitle: '3 End-to-End Portfolio Projects',
+            topics: [
+              { id: 'm5_t1', title: 'Project 1 (SQL + Power BI — Retail/E-Commerce)', detail: 'Analyze sales/return data, identify dropping profit margins, build Power BI dashboard, and write a 1-page executive summary.', tag: 'Project 1', hasLinkInput: true, linkKey: 'proj1_url' },
+              { id: 'm5_t2', title: 'Project 2 (Python Pandas + Matplotlib — Fintech/Banking)', detail: 'Analyze loan default or credit card churn data using Python, uncover key risk patterns, and propose policy changes.', tag: 'Project 2', hasLinkInput: true, linkKey: 'proj2_url' },
+              { id: 'm5_t3', title: 'Project 3 (Pure Business Analyst Case Study — Product Improvement)', detail: 'Pick an app (e.g., Zomato, Zepto, Banking), identify a user pain point, write a mini BRD, draft 5 User Stories, and draw Figma wireframes.', tag: 'Project 3', hasLinkInput: true, linkKey: 'proj3_url' }
+            ]
+          }
+        ]
+      },
+      {
+        monthId: 'm6',
+        monthNum: 6,
+        title: 'Month 6: Resume, LinkedIn & Job Hunt Execution',
+        subtitle: 'Optimize credentials, publish projects & execute daily job application strategy',
+        badge: 'Job Hunt Pillar',
+        pillarKey: 'p6',
+        modules: [
+          {
+            moduleTitle: 'Execution Weeks',
+            topics: [
+              { id: 'm6_t1', title: 'Week 1: Build 1-Page ATS-Friendly Resume', detail: 'Highlight BA Economics degree, 3 portfolio projects, and Python/SQL/Power BI/BRD skills clearly.', tag: 'Resume' },
+              { id: 'm6_t2', title: 'Week 2 (Part 1): Optimize LinkedIn Headline', detail: 'Headline text: "Aspiring Business & Product Analyst | BA Economics | SQL, Python, Power BI, Agile & BRD".', tag: 'LinkedIn' },
+              { id: 'm6_t3', title: 'Week 2 (Part 2): Post 3 Portfolio Projects with Screenshots', detail: 'Publish clean visual posts of your 3 projects on LinkedIn to demonstrate proof of work.', tag: 'LinkedIn' },
+              { id: 'm6_t4', title: 'Weeks 3–4 (Part 1): Daily Multi-Platform Job Applications', detail: 'Apply daily to Associate BA, Junior BA, Product Analyst, BI Analyst, and Operations Analyst across LinkedIn, Naukri, Wellfound, & Internshala (PPO).', tag: 'Job Hunt' },
+              { id: 'm6_t5', title: 'Weeks 3–4 (Part 2): Practice Daily SQL + BA Scenario Questions', detail: 'Solve daily SQL query challenges and rehearse real-world BA scenario interview responses.', tag: 'Interview Prep' }
+            ]
+          }
+        ]
+      }
+    ];
+
+    // APPLICATION STATE
+    let appState = {
+      completed: {},
+      projectLinks: {},
+      customTasks: {},
+      logs: [],
+      notes: '',
+      candidateName: 'M Ahammad Irfan',
+      celebrated: false,
+      expandedMonths: { m1: true, m2: true, m3: true, m4: true, m5: true, m6: true }
+    };
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    // INITIALIZATION ON LOAD
+    window.onload = function() {
+      loadState();
+      
+      // Set current date in log form
+      const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      document.getElementById('logDate').value = today;
+      document.getElementById('certDateText').innerText = 'Date: ' + today;
+
+      renderApp();
+    };
+
+    // LOCAL STORAGE HANDLING
+    function loadState() {
+      const saved = localStorage.getItem('ba_roadmap_master_state');
+      if (saved) {
+        try {
+          appState = Object.assign(appState, JSON.parse(saved));
+        } catch(e) {
+          console.error("Failed to load saved state", e);
+        }
+      }
+      if (appState.notes) {
+        document.getElementById('studyNotes').value = appState.notes;
+      }
+      if (appState.candidateName) {
+        document.getElementById('certCandidateName').value = appState.candidateName;
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem('ba_roadmap_master_state', JSON.stringify(appState));
+      updateProgressMeters();
+    }
+
+    // MAIN RENDER CONTROLLER
+    function renderApp() {
+      renderMonths();
+      renderPillars();
+      renderLogs();
+      updateProgressMeters();
+    }
+
+    // RENDER MONTH CARDS & TOPICS
+    function renderMonths() {
+      const container = document.getElementById('monthsContainer');
+      container.innerHTML = '';
+
+      let matchCount = 0;
+
+      ROADMAP_DATA.forEach(month => {
+        const customForMonth = appState.customTasks[month.monthId] || [];
+        
+        // Count totals for month
+        let monthTopics = [];
+        month.modules.forEach(m => {
+          monthTopics = monthTopics.concat(m.topics);
+        });
+        monthTopics = monthTopics.concat(customForMonth);
+
+        const totalMonthCount = monthTopics.length;
+        const doneMonthCount = monthTopics.filter(t => appState.completed[t.id]).length;
+        const monthPercent = totalMonthCount > 0 ? Math.round((doneMonthCount / totalMonthCount) * 100) : 0;
+
+        const isExpanded = !!appState.expandedMonths[month.monthId];
+
+        // Create Month Card Element
+        const card = document.createElement('div');
+        card.className = 'border border-slate-200 rounded-2xl bg-white custom-shadow overflow-hidden transition-all duration-200';
+
+        // Header HTML
+        let headerHtml = `
+          <div onclick="toggleMonthExpand('${month.monthId}')" class="p-5 flex items-center justify-between cursor-pointer select-none bg-white hover:bg-slate-50 transition border-b border-slate-100">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl ${monthPercent === 100 ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'} font-bold flex items-center justify-center text-sm flex-shrink-0">
+                M${month.monthNum}
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-slate-900 text-base">${month.title}</h3>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${monthPercent === 100 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">${month.badge}</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">${month.subtitle}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <div class="text-right hidden sm:block">
+                <span class="text-xs font-bold text-slate-800">${doneMonthCount} / ${totalMonthCount}</span>
+                <div class="w-24 bg-slate-100 h-1.5 rounded-full mt-1 overflow-hidden">
+                  <div class="bg-blue-600 h-1.5 transition-all duration-300" style="width: ${monthPercent}%"></div>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-${isExpanded ? 'up' : 'down'} text-slate-400 text-sm"></i>
+            </div>
+          </div>
+        `;
+
+        // Content Area HTML
+        let contentHtml = `<div class="${isExpanded ? 'block' : 'hidden'} p-5 space-y-6 bg-slate-50/30">`;
+
+        month.modules.forEach(mod => {
+          contentHtml += `
+            <div class="space-y-3">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 pb-1">${mod.moduleTitle}</h4>
+              <div class="space-y-2.5">
+          `;
+
+          mod.topics.forEach(topic => {
+            const isChecked = !!appState.completed[topic.id];
+            
+            // Filter & Search Logic
+            let matchesFilter = true;
+            if (currentFilter === 'pending' && isChecked) matchesFilter = false;
+            if (currentFilter === 'completed' && !isChecked) matchesFilter = false;
+
+            let matchesSearch = true;
+            if (searchQuery) {
+              const q = searchQuery.toLowerCase();
+              matchesSearch = topic.title.toLowerCase().includes(q) || topic.detail.toLowerCase().includes(q) || (topic.tag && topic.tag.toLowerCase().includes(q));
+            }
+
+            if (!matchesFilter || !matchesSearch) return;
+
+            matchCount++;
+
+            contentHtml += `
+              <div class="p-3.5 rounded-xl border transition-all duration-150 ${isChecked ? 'bg-emerald-50/50 border-emerald-200' : 'bg-white border-slate-200 hover:border-slate-300'}">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-start gap-3">
+                    <input type="checkbox" id="${topic.id}" ${isChecked ? 'checked' : ''} onchange="toggleTask('${topic.id}')" 
+                      class="mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer">
+                    <div>
+                      <label for="${topic.id}" class="text-xs font-semibold ${isChecked ? 'line-through text-slate-500' : 'text-slate-900'} cursor-pointer">
+                        ${topic.title}
+                      </label>
+                      <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">${topic.detail}</p>
+                      
+                      ${topic.hasLinkInput ? `
+                        <div class="mt-2.5 flex items-center gap-2">
+                          <i class="fa-solid fa-link text-slate-400 text-xs"></i>
+                          <input type="text" placeholder="Paste GitHub / Notion / Project URL..." value="${appState.projectLinks[topic.linkKey] || ''}" 
+                            onchange="saveProjectLink('${topic.linkKey}', this.value)" 
+                            class="text-xs px-2.5 py-1 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 w-full sm:w-80 bg-white">
+                        </div>
+                      ` : ''}
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded flex-shrink-0 ${isChecked ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">
+                    ${topic.tag}
+                  </span>
+                </div>
+              </div>
+            `;
+          });
+
+          contentHtml += `</div></div>`;
+        });
+
+        // Append custom tasks if any
+        if (customForMonth.length > 0) {
+          contentHtml += `
+            <div class="space-y-3 pt-2">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-purple-600 border-b border-purple-200 pb-1">Custom Added Topics</h4>
+              <div class="space-y-2.5">
+          `;
+          customForMonth.forEach(ct => {
+            const isChecked = !!appState.completed[ct.id];
+            contentHtml += `
+              <div class="p-3.5 rounded-xl border transition-all duration-150 ${isChecked ? 'bg-emerald-50/50 border-emerald-200' : 'bg-white border-purple-200'}">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-start gap-3">
+                    <input type="checkbox" id="${ct.id}" ${isChecked ? 'checked' : ''} onchange="toggleTask('${ct.id}')" class="mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer">
+                    <div>
+                      <label for="${ct.id}" class="text-xs font-semibold ${isChecked ? 'line-through text-slate-500' : 'text-slate-900'} cursor-pointer">${ct.title}</label>
+                      <p class="text-[11px] text-slate-500 mt-0.5">${ct.detail}</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-800">${ct.tag}</span>
+                </div>
+              </div>
+            `;
+          });
+          contentHtml += `</div></div>`;
+        }
+
+        // Add Custom Task Button Footer
+        contentHtml += `
+          <div class="pt-2 flex justify-end">
+            <button onclick="openCustomTaskModal('${month.monthId}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-blue-600 hover:bg-blue-50 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus text-[10px]"></i> Add Task to ${month.title.split(':')[0]}
+            </button>
+          </div>
+        `;
+
+        contentHtml += `</div>`;
+        card.innerHTML = headerHtml + contentHtml;
+        container.appendChild(card);
+      });
+
+      // Search empty state check
+      if (searchQuery && matchCount === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center bg-white rounded-2xl border border-slate-200 custom-shadow">
+            <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300 mb-2"></i>
+            <h4 class="font-bold text-slate-800">No matching topics found</h4>
+            <p class="text-xs text-slate-500 mt-1">Try searching for generic terms like "SQL", "Excel", "DAX", or "Python".</p>
+            <button onclick="clearSearch()" class="mt-3 text-xs font-semibold text-blue-600 hover:underline">Clear Search Filter</button>
+          </div>
+        `;
+      }
+    }
+
+    // TOGGLE CHECKBOX TASK
+    function toggleTask(id) {
+      appState.completed[id] = !appState.completed[id];
+      saveState();
+      renderMonths();
+      renderPillars();
+
+      // Check 100% completion celebration trigger
+      const totals = getAllTaskCount();
+      if (totals.done === totals.total && totals.total > 0 && !appState.celebrated) {
+        appState.celebrated = true;
+        saveState();
+        setTimeout(() => {
+          openCertificateModal();
+        }, 400);
+      }
+    }
+
+    // HELPER: GET TOTAL TASKS
+    function getAllTaskCount() {
+      let total = 0;
+      let done = 0;
+      ROADMAP_DATA.forEach(month => {
+        month.modules.forEach(m => {
+          m.topics.forEach(t => {
+            total++;
+            if (appState.completed[t.id]) done++;
+          });
+        });
+        const custom = appState.customTasks[month.monthId] || [];
+        custom.forEach(c => {
+          total++;
+          if (appState.completed[c.id]) done++;
+        });
+      });
+      return { total, done };
+    }
+
+    // UPDATE METERS & DYNAMIC CAREER RANK
+    function updateProgressMeters() {
+      const totals = getAllTaskCount();
+      const percent = totals.total > 0 ? Math.round((totals.done / totals.total) * 100) : 0;
+
+      // Header Bar & Circle
+      document.getElementById('topProgressBar').style.width = percent + '%';
+      document.getElementById('statPercentText').innerText = percent + '%';
+      document.getElementById('completedCountText').innerText = totals.done;
+      document.getElementById('totalCountText').innerText = `/ ${totals.total} Topics Ticked`;
+      document.getElementById('circleProgress').setAttribute('stroke-dasharray', `${percent}, 100`);
+
+      // Dynamic Identity Ranks
+      let rank = 'Aspiring Business Analyst';
+      let sub = 'Master Excel & SQL foundations to kickstart your BA career.';
+      
+      if (percent >= 95) {
+        rank = 'Certified Job-Ready Business Analyst';
+        sub = 'Fully equipped with BA Economics, SQL, Python, Power BI, Agile & 3 Portfolio Projects! Ready for applications.';
+      } else if (percent >= 76) {
+        rank = 'Portfolio-Backed Business Analyst';
+        sub = 'All 3 portfolio projects complete. Finalizing resume & daily job application strategy.';
+      } else if (percent >= 56) {
+        rank = 'Agile & Product Requirements Specialist';
+        sub = 'Strong command over BRD/FRD, User Stories, Jira, and Process Diagrams.';
+      } else if (percent >= 36) {
+        rank = 'Python & BI Insights Analyst';
+        sub = 'Proficient in Pandas data manipulation, Star Schema modeling, and DAX dashboard design.';
+      } else if (percent >= 16) {
+        rank = 'Data & SQL Practitioner';
+        sub = 'Excel formulas, SQL Window functions, CTEs, and joins mastered.';
+      }
+
+      document.getElementById('rankBadge').innerText = rank;
+      document.getElementById('overallRankTitle').innerText = rank;
+      document.getElementById('rankSubtitleText').innerText = sub;
+      document.getElementById('certVerifiedPercent').innerText = `${percent}% Curriculum Verified`;
+    }
+
+    // RENDER 6 PILLAR BARS
+    function renderPillars() {
+      const container = document.getElementById('pillarProgressContainer');
+      container.innerHTML = '';
+
+      ROADMAP_DATA.forEach(month => {
+        let monthTopics = [];
+        month.modules.forEach(m => { monthTopics = monthTopics.concat(m.topics); });
+        const custom = appState.customTasks[month.monthId] || [];
+        monthTopics = monthTopics.concat(custom);
+
+        const total = monthTopics.length;
+        const done = monthTopics.filter(t => appState.completed[t.id]).length;
+        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+        const item = document.createElement('div');
+        item.className = 'space-y-1';
+        item.innerHTML = `
+          <div class="flex items-center justify-between text-xs font-semibold">
+            <span class="text-slate-700 truncate">${month.badge}</span>
+            <span class="${pct === 100 ? 'text-emerald-600' : 'text-slate-500'} font-bold">${pct}%</span>
+          </div>
+          <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+            <div class="${pct === 100 ? 'bg-emerald-500' : 'bg-blue-600'} h-2 transition-all duration-500 rounded-full" style="width: ${pct}%"></div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // PROJECT LINKS SAVE
+    function saveProjectLink(key, val) {
+      appState.projectLinks[key] = val.trim();
+      saveState();
+    }
+
+    // LINKEDIN HEADLINE QUICK COPY
+    function copyLinkedInHeadline() {
+      const text = document.getElementById('linkedinHeadlineText').innerText.trim();
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+
+      const btnText = document.getElementById('headlineCopyText');
+      const btn = document.getElementById('headlineCopyBtn');
+      btnText.innerText = 'Copied!';
+      btn.classList.remove('bg-blue-600');
+      btn.classList.add('bg-emerald-600');
+
+      setTimeout(() => {
+        btnText.innerText = 'Copy Headline';
+        btn.classList.remove('bg-emerald-600');
+        btn.classList.add('bg-blue-600');
+      }, 2000);
+    }
+
+    // APPLICATION LOG HANDLERS
+    function handleLogSubmit(e) {
+      e.preventDefault();
+      const comp = document.getElementById('logCompany').value.trim();
+      const plat = document.getElementById('logPlatform').value;
+      const date = document.getElementById('logDate').value;
+
+      if (!comp) return;
+
+      const log = { id: Date.now(), company: comp, platform: plat, date: date };
+      appState.logs.unshift(log);
+      saveState();
+      renderLogs();
+
+      document.getElementById('logCompany').value = '';
+    }
+
+    function deleteLog(id) {
+      appState.logs = appState.logs.filter(l => l.id !== id);
+      saveState();
+      renderLogs();
+    }
+
+    function renderLogs() {
+      const container = document.getElementById('appLogContainer');
+      const badge = document.getElementById('appLogBadge');
+      badge.innerText = `${appState.logs.length} Logged`;
+      container.innerHTML = '';
+
+      if (appState.logs.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-3">No applications logged yet today.</p>`;
+        return;
+      }
+
+      appState.logs.forEach(l => {
+        const d = document.createElement('div');
+        d.className = 'p-2 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs';
+        d.innerHTML = `
+          <div>
+            <span class="font-bold text-slate-800">${l.company}</span>
+            <div class="flex items-center gap-1.5 text-[10px] text-slate-500 mt-0.5">
+              <span class="font-semibold text-blue-600">${l.platform}</span> &bull; <span>${l.date}</span>
+            </div>
+          </div>
+          <button onclick="deleteLog(${l.id})" class="text-slate-400 hover:text-red-500 p-1">
+            <i class="fa-solid fa-trash-can text-xs"></i>
+          </button>
+        `;
+        container.appendChild(d);
+      });
+    }
+
+    // NOTES SAVE
+    function saveNotes() {
+      appState.notes = document.getElementById('studyNotes').value;
+      saveState();
+    }
+
+    function saveCandidateName(val) {
+      appState.candidateName = val;
+      saveState();
+    }
+
+    // EXPAND & COLLAPSE ALL
+    function toggleMonthExpand(mId) {
+      appState.expandedMonths[mId] = !appState.expandedMonths[mId];
+      saveState();
+      renderMonths();
+    }
+
+    function toggleAllMonths(expand) {
+      ROADMAP_DATA.forEach(m => {
+        appState.expandedMonths[m.monthId] = expand;
+      });
+      saveState();
+      renderMonths();
+    }
+
+    // SEARCH & FILTERS
+    function setFilter(f) {
+      currentFilter = f;
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('bg-white', 'text-blue-600', 'shadow-sm');
+        b.classList.add('text-slate-600');
+      });
+      const activeBtn = document.getElementById('filter' + f.charAt(0).toUpperCase() + f.slice(1));
+      if (activeBtn) {
+        activeBtn.classList.add('bg-white', 'text-blue-600', 'shadow-sm');
+        activeBtn.classList.remove('text-slate-600');
+      }
+      renderMonths();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim();
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (searchQuery) clearBtn.classList.remove('hidden');
+      else clearBtn.classList.add('hidden');
+      renderMonths();
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      searchQuery = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      renderMonths();
+    }
+
+    // CERTIFICATE MODAL & CONFETTI
+    function openCertificateModal() {
+      document.getElementById('printableCertificateModal').classList.remove('hidden');
+      triggerConfetti();
+    }
+
+    function closeCertificateModal() {
+      document.getElementById('printableCertificateModal').classList.add('hidden');
+    }
+
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      }
+    }
+
+    // CUSTOM TASK MODAL
+    function openCustomTaskModal(monthId) {
+      document.getElementById('customTaskMonthId').value = monthId;
+      document.getElementById('customTaskModal').classList.remove('hidden');
+    }
+
+    function closeCustomTaskModal() {
+      document.getElementById('customTaskModal').classList.add('hidden');
+    }
+
+    function handleAddCustomTask(e) {
+      e.preventDefault();
+      const monthId = document.getElementById('customTaskMonthId').value;
+      const title = document.getElementById('customTaskTitle').value.trim();
+      const detail = document.getElementById('customTaskDetail').value.trim() || 'Custom roadmap goal.';
+      const tag = document.getElementById('customTaskTag').value.trim() || 'Custom';
+
+      if (!title) return;
+
+      if (!appState.customTasks[monthId]) appState.customTasks[monthId] = [];
+
+      appState.customTasks[monthId].push({
+        id: 'ct_' + Date.now(),
+        title: title,
+        detail: detail,
+        tag: tag
+      });
+
+      saveState();
+      renderMonths();
+      renderPillars();
+      closeCustomTaskModal();
+
+      document.getElementById('customTaskTitle').value = '';
+      document.getElementById('customTaskDetail').value = '';
+      document.getElementById('customTaskTag').value = '';
+    }
+
+    // EXPORT & IMPORT DATA JSON BACKUP
+    function exportDataJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `BA_Roadmap_Backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importDataJSON(e) {
+      const fileReader = new FileReader();
+      fileReader.onload = function(event) {
+        try {
+          const parsed = JSON.parse(event.target.result);
+          if (parsed && typeof parsed === 'object') {
+            appState = Object.assign(appState, parsed);
+            saveState();
+            renderApp();
+            alert('Roadmap progress successfully restored!');
+          }
+        } catch(err) {
+          alert('Invalid JSON backup file format.');
+        }
+      };
+      if (e.target.files[0]) {
+        fileReader.readAsText(e.target.files[0]);
+      }
+    }
+
+    // RESET CONFIRMATION
+    function confirmReset() {
+      if (confirm('Are you sure you want to reset all progress, tasks, logs, and notes?')) {
+        appState = {
+          completed: {},
+          projectLinks: {},
+          customTasks: {},
+          logs: [],
+          notes: '',
+          candidateName: 'M Ahammad Irfan',
+          celebrated: false,
+          expandedMonths: { m1: true, m2: true, m3: true, m4: true, m5: true, m6: true }
+        };
+        localStorage.removeItem('ba_roadmap_master_state');
+        document.getElementById('studyNotes').value = '';
+        renderApp();
+      }
+    }
+  </script>
+</body>
+</html>
